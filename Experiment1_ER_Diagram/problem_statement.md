@@ -45,73 +45,41 @@ Design a database for patient management, appointments, medical records, and bil
    - Why you chose the entities and relationships.
    - How you modeled prerequisites or billing.
 
-# ER Diagram Submission - Stephen raj Y
+# ER Diagram Submission - Rahul V
 
 ## Scenario Chosen:
-University
+University 
 
 ## ER Diagram:
-![ER Diagram](er_diagram.png)
-![image](https://github.com/user-attachments/assets/dde8e2a5-650e-4c33-b5ce-6d8939a7aa43)
+![Screenshot 2025-05-06 112346](https://github.com/user-attachments/assets/44d8dc7c-7a8e-4ad1-92c0-79c5df26bc14)
+
 
 
 ## Entities and Attributes:
-```
-USER: ID, NAME, PHNO, ADDRESS
-REGISTRATION: STU_ID, REG_ID, DATE, TYPE, DATE
-STUDENT: REG_NO, ID, NAME, DOB, DEPT, YEAR, YEAR_ENROLLED, CREDITS, FEE
-PROGRAM: PROG_NAME, PROG_ID, CREDIT_POINTS
-COURSE: NAME, ID, PREREQUISIT
-ATTEMPTS: YEAR, SEM, MARK, GRADE
-MANAGEMENT: (This appears to be a relationship, not an entity with its own attributes in this diagram)
-ENROLL: (This appears to be a relationship, not an entity with its own attributes in this diagram)
-CONTAINS: (This appears to be a relationship, not an entity with its own attributes in this diagram)
-ENROLLMENT: STATUS (This appears to be a relationship, not an entity with its own attributes in this diagram)
-```
+Student-(Register No, Name, dob, EmailId, Mobile No)
+
+Department -(department name, hod)
+
+Course-(course name, course no, no. of credits)
+
+Faculty- (Staff Id, mobile no, name, email)
+
+Prerequisite Courses- (course name, credits)
+
+
 ## Relationships and Constraints:
-
-```
-MANAGEMENT: USER manages REGISTRATION (Cardinality and Participation are not explicitly shown, but it implies
-a one-to-many relationship where one user can manage multiple registrations, and a registration is managed by 
-one user. Participation likely total for REGISTRATION and partial for USER).
-
-REGISTRATION: STUDENT has REGISTRATION (Cardinality and Participation are not explicitly shown, but it implies 
-a one-to-many relationship where one student can have multiple registrations, and a registration belongs to one
-student. Participation likely total for REGISTRATION and partial for STUDENT).
-
-ENROLL: STUDENT enrolls in PROGRAM (Cardinality and Participation are not explicitly shown, but it implies a many-to-many 
-relationship since a student can enroll in multiple programs, and a program can have multiple students. Participation is likely total for both).
-
-CONTAINS: PROGRAM contains COURSE (Cardinality and Participation are not explicitly shown, but it implies a one-to-many
-relationship where one program can contain multiple courses, and a course belongs to one program. Participation likely total for COURSE and partial for PROGRAM).
-
-ATTEMPTS: STUDENT has ATTEMPTS (Cardinality and Participation are not explicitly shown, but it implies a one-to-many relationship
-where one student can have multiple attempts for different courses, and an attempt belongs to one student. Participation likely 
-total for ATTEMPTS and partial for STUDENT).
-
-ENROLLMENT: STUDENT enrolls in COURSE (Cardinality and Participation are not explicitly shown, but it implies a many-to-many relationship
-with an attribute 'STATUS', indicating the enrollment status of a student in a course. Participation is likely total for both).
-
-PREREQUISIT: COURSE has PREREQUISIT (This is a reflexive relationship on the COURSE entity, indicating that one course can be a
-prerequisite for another. Cardinality and Participation are not explicitly shown, but it's likely an optional many-to-many relationship,
-as a course can have multiple prerequisites and can be a prerequisite for multiple other courses, and some courses might not have any prerequisites).
-```
+- Belongs to (Student, Department)
+- Enrolls in (Student, Course)
+- Offers (Department, Course)
+- Handled by (Course, Faculty)
+- Has prerequisites (Course, Prerequisite Courses)
+- Belongs to (Faculty, Department)
 
 ## Extension (Prerequisite / Billing):
-```
-Prerequisite: Prerequisites are modeled through a reflexive relationship on the COURSE entity. The attribute
-PREREQUISIT (which should likely be PREREQ_ID to reference another course's ID) in the COURSE entity indicates which course(s)
-are required before taking a particular course. This structure allows for defining chains or multiple prerequisites for a single course.
-
-Billing: Billing information is partially modeled through the FEE attribute in the STUDENT entity. This suggests that each student
-has an associated fee. However, the diagram doesn't provide details on when or how these fees are applied (e.g., per program, per
-semester, per course) or any information about payment status, due dates, or billing history. To model billing more comprehensively,
- you might need additional entities like BILL, PAYMENT, or a more detailed structure within the REGISTRATION or a new enrollment-specific entity to track financial aspects.
-```
+- The ER diagram models prerequisites using the has prerequisites relationship connecting Course to the Prerequisite Courses entity. This separate entity stores details like course name and credits for each prerequisite. This design allows a course to have multiple prerequisites, each with specific attributes, avoiding multi-valued attributes in the Course entity. The implied Many-to-Many relationship signifies that one course can have several prerequisites, and a course can be a prerequisite for many others. This approach ensures a flexible and normalized representation of prerequisite dependencies within the database.
 
 ## Design Choices:
-```
-This ER diagram provides a good foundation for a student registration system, capturing key entities and their relationships.
-However, depending on the specific requirements, further refinement might be needed, especially in areas like billing and a clearer
-definition of the 'TYPE' attribute in the REGISTRATION entity.
-```
+The entities in this ER diagram—Student, Department, Course, and Faculty—were chosen as they represent the core organizational units and actors within a typical academic institution. Students are the primary subjects of study, Departments are the administrative and academic groupings, Courses are the units of instruction, and Faculty are the educators and researchers. The relationships model the natural interactions between these entities: students belong to departments and enroll in courses; departments offer courses and faculty belong to and handle them; and courses have prerequisites. The inclusion of "Prerequisite Courses" as a separate entity, linked by the "has prerequisites" relationship, addresses the need to capture potentially multiple and attribute-rich prerequisite information for each course without complicating the main "Course" entity. Key assumptions include that every student and faculty member is associated with one department (total participation), and that the curriculum is structured around courses offered by departments and potentially requiring other courses as prerequisites. The Many-to-Many cardinalities for "enrolls in" and "handled by" reflect the reality that students take multiple courses and faculty teach multiple courses.
+
+## RESULT
+Thus the ER diagram for the university database is successfully developed.
